@@ -32,7 +32,7 @@ public class User {
         this.email = email;
         this.createdAt = createdAt;
     }
-    // 마지막에 build로 닫아주면 됨 lombok에서 지원함
-    // 풀 생성자를 만들고 위에 builer를 붙이면 해줌 ㄹㅈㄷ
+//     마지막에 build로 닫아주면 됨 lombok에서 지원함
+//     풀 생성자를 만들고 위에 builer를 붙이면 해줌 ㄹㅈㄷ
 //    User u = User.builder().username(username).password(password).email(email).build();
 }

@@ -26,7 +26,7 @@ public class Board {
     // 오브젝트 릴레이션 매핑
     // 연관관계를 맺으면 자동으로 join 해준다.
     // join을해서 user 객체에까지 mapping 해서 알아서 넣어줌 대박
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER) // lazy 는 호출될 때 가져옴 지연로딩 그럼 이거 어디에 활용함?
     private User user;
 
     @CreationTimestamp
