@@ -4,10 +4,17 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+
 @RequiredArgsConstructor
 @Repository
 public class UserRepository {
     private final EntityManager em;
+
+    //jpql은 통역가
+    // jpql 로 짜면 객체 지향이기 때문에 짜기 쉬움
+    public User findById(int id) {
+        return em.find(User.class, id);
+    }
 
     /*
     1. createNativeQuery : 기본쿼리
@@ -17,7 +24,8 @@ public class UserRepository {
      */
 
     public void save(User user) {
-        em.persist(user);
+        em.persist(user); // 3. user 영속 객체
+        // 4. user 는 데이터베이스와 동기화 됨
     }
 
 
