@@ -20,12 +20,16 @@ public class UserRepository {
         em.persist(user);
     }
 
-
     // :username 에 키값을 넣어줌
     // 클래스이름 대문자
     public User findByUsername(String username) {
-        return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-                .setParameter("username", username)
-                .getSingleResult();
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

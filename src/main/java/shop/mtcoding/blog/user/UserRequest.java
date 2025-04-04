@@ -25,5 +25,6 @@ public class UserRequest {
     public static class LoginDTO {
         private String username;
         private String password;
+        private String rememberMe; //check 되면 on, 안되면 null
     }
 }
