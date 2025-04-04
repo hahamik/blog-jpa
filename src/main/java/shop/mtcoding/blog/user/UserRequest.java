@@ -1,20 +1,24 @@
 package shop.mtcoding.blog.user;
 
-
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Timestamp;
-
 
 public class UserRequest {
+
+    // insert 되는 용도의 dto에는 toEntity 메서드를 만든다.
     @Data
-    public static class UserJoinDTO {
+    public static class JoinDTO {
         private String username;
         private String password;
         private String email;
-        @CreationTimestamp
-        private Timestamp createAt;
+
+        public User toEntity() {
+            User user = new User();
+            return User.builder()
+                    .username(username)
+                    .password(password)
+                    .email(email)
+                    .build();
+        }
     }
 
     @Data

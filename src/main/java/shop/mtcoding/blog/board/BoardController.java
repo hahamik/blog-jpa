@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class BoardController {
 
-    private final BoardService boardService;
-
     @GetMapping("/")
     public String list() {
         return "board/list";
