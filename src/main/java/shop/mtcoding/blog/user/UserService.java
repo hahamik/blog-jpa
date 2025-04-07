@@ -43,7 +43,7 @@ public class UserService {
         return dto;
     }
 
-    @Transactional
+    @Transactional // 트랜잭션이 걸려있어야 더티하게 함 아니면 select라고 생각을 해서 더티체킹을 하지 않음
     public User 회원정보수정(UserRequest.UpdateDTO updateDTO, Integer userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) throw new RuntimeException("없는 회원입니다");

@@ -13,6 +13,7 @@ public class BoardRepository {
 
     private final EntityManager em;
 
+
     public void save(Board board) {
         em.persist(board);
     }
@@ -33,4 +34,13 @@ public class BoardRepository {
         return query.getResultList();
     }
 
+    public Board findById(Integer id) {
+        return em.find(Board.class, id);// 쿼리짜도 되는데 얘를 써야 캐싱을 함
+    }
+
+    public Board findByIdJoinUser(Integer id) {
+        Query query = em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class); // on절이 있는데 생략 가능하다. 그냥 join이 -> innerjoin , left join 이 left outer join
+        query.setParameter("id", id);
+        return (Board) query.getSingleResult();
+    }
 }

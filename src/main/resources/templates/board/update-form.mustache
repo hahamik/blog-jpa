@@ -8,10 +8,10 @@
             <form action="/board/1/update" method="post">
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="Enter title" name="title"
-                           value="제목1">
+                           value={{board.title}}>
                 </div>
                 <div class="mb-3">
-                    <textarea class="form-control" rows="5" name="content">내용1</textarea>
+                    <textarea class="form-control" rows="5" name="content">{{board.content}}</textarea>
                 </div>
                 <!-- ✅ 공개 여부 체크박스 -->
                 <div class="form-check mb-3">

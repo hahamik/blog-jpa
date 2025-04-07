@@ -36,4 +36,10 @@ public class BoardRepositoryTest {
             System.out.println();
         }
     }
+
+    @Test
+    public void findByIdJoinUserTest() {
+        Integer id = 1;
+        Board board = boardRepository.findByIdJoinUser(id);
+    }
 }

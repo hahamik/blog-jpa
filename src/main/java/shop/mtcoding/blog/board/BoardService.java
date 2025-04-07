@@ -24,8 +24,17 @@ public class BoardService {
 //                .build());
     }
 
-
     public List<Board> 글목록보기(Integer userId) {
         return boardRepository.findAll(userId);
+    }
+
+    public BoardResponse.DetailDTO 글상세보기(Integer id, Integer userId) {
+        Board board = boardRepository.findByIdJoinUser(id);
+        BoardResponse.DetailDTO detailDTO = new BoardResponse.DetailDTO(board, userId);
+        return detailDTO;
+    }
+
+    public Board 상세보기(int id) {
+        return boardRepository.findById(id);
     }
 }
