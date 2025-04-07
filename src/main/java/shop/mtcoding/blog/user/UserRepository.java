@@ -30,4 +30,12 @@ public class UserRepository {
         }
 
     }
+
+    public User findByUserId(Integer userId) {
+        return em.find(User.class, userId);
+    }
+
+//    public void updateById() {
+//        Query query = em.createQuery("update User u set u.username = :username");
+//    }
 }

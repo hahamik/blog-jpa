@@ -66,4 +66,21 @@ public class UserController {
         session.invalidate();
         return "redirect:/";
     }
+
+    @GetMapping("/user/update-form")
+    public String updateForm() {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        return "user/update-form";
+    }
+
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO updateDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        User user = userService.회원정보수정(updateDTO, sessionUser.getId());
+        session.setAttribute("sessionUser", user);
+        //세션을 동기화 해줘야 됨
+        return "redirect:/";
+    }
 }

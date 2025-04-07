@@ -42,4 +42,12 @@ public class UserService {
         }
         return dto;
     }
+
+    @Transactional
+    public User 회원정보수정(UserRequest.UpdateDTO updateDTO, Integer userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) throw new RuntimeException("없는 회원입니다");
+        user.update(updateDTO.getPassword(), updateDTO.getEmail()); // 영속화된 객체의 상태 변경
+        return user; // user를 리턴해줘야 세션을 동기화 할 수 있음
+    }// 더티체킹 -> 상태가 변경되면 update를 날림, 영속화된 객체의 상태가 변경되면 update를 날려버림
 }
