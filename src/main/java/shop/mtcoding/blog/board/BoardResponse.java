@@ -21,8 +21,11 @@ public class BoardResponse {
             this.content = board.getContent();
             this.isPublic = board.getIsPublic();
             this.isOwner = sessionUserId == board.getUser().getId();
+//            this.isOwner = (sessionUserId != null && sessionUserId.equals(board.getUser().getId()));
             this.username = board.getUser().getUsername();
             this.createdAt = board.getCreatedAt();
         }
     }
+
+
 }
