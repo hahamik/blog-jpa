@@ -3,6 +3,8 @@ package shop.mtcoding.blog.board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.love.Love;
+import shop.mtcoding.blog.love.LoveRepository;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final LoveRepository loveRepository;
 
     @Transactional
     public void 글쓰기(BoardRequest.SaveDTO saveDTO, User sessionuser) {
@@ -28,9 +31,12 @@ public class BoardService {
         return boardRepository.findAll(userId);
     }
 
-    public BoardResponse.DetailDTO 글상세보기(Integer id, Integer userId) {
-        Board board = boardRepository.findByIdJoinUser(id);
-        BoardResponse.DetailDTO detailDTO = new BoardResponse.DetailDTO(board, userId);
+    public BoardResponse.DetailDTO 글상세보기(Integer boardId, Integer userId) {
+        Board board = boardRepository.findByIdJoinUser(boardId);
+        Love love = loveRepository.findByUserIdAndBoardId(userId, boardId);
+        Boolean isLove = love != null ? true : false;
+        int loveCount = loveRepository.findByBoardId(boardId);
+        BoardResponse.DetailDTO detailDTO = new BoardResponse.DetailDTO(board, userId, isLove, loveCount);
         return detailDTO;
     }
 
