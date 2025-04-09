@@ -12,21 +12,19 @@ import java.sql.Timestamp;
 
 @NoArgsConstructor
 @Getter
-@Entity
 @Table(
         name = "love_tb",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"user_id", "board_id"})
         }
 )
+@Entity
 public class Love {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id") 컬럼을 user_id로 바꿔줌
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,4 +1,7 @@
 {{> layout/header}}
+
+<input type="hidden" id="boardId" value="{{model.id}}">
+
 <div class="container p-5">
 
     <!-- 수정삭제버튼 -->
@@ -27,12 +30,14 @@
     <!-- AJAX 좋아요 영역 -->
     <div class="my-3 d-flex align-items-center">
         {{#model.isLove}}
-            <i id="likeIcon" class="fa fa-heart" style="font-size:20px; color:red" onclick="likeToggle()"></i>
+            <i id="loveIcon" class="fa fa-heart" style="font-size:20px; color:red"
+               onclick="deleteLove({{model.loveId}})"></i>
         {{/model.isLove}}
         {{^model.isLove}}
-            <i id="likeIcon" class="fa fa-heart" style="font-size:20px; color:black" onclick="likeToggle()"></i>
+            <i id="loveIcon" class=" fa fa-heart" style="font-size:20px; color:black"
+               onclick="saveLove()"></i>
         {{/model.isLove}}
-        <span class="ms-1"><b id="likeCount">{{model.loveCount}}</b>명이 이 글을 좋아합니다</span>
+        <span class="ms-1"><b id="loveCount">{{model.loveCount}}</b>명이 이 글을 좋아합니다</span>
     </div>
 
     <!-- 댓글 -->
@@ -77,19 +82,48 @@
 </div>
 
 <script>
-    let liked = false; // 처음엔 좋아요 상태라고 가정
+    let boardId = document.querySelector("#boardId").value;
 
-    function likeToggle() {
-        let icon = document.querySelector('#likeIcon');
+    // setInterval(() => {
+    //     location.reload();
+    // }, 1000) // 주기적으로 request를 보냄 polling
+    // //polling 서버에 간혈적으로 요청하는 것
+    // // 상태를 주기적으로 검사하는 것.
 
-        if (liked) {
-            icon.style.color = 'black';
-        } else {
-            icon.style.color = 'red';
-        }
+    // input은 전역변수로 당기는게 좋음
+    async function saveLove() {
+        // let boardId = document.querySelector("#likeIcon").dataset.boardId; // dataset에 뒤에 있는건(하이픈으로 뒤에잇는거) .으로 찾으면 됨// data set 은 함수안에 넣어야 함
+        let requestBody = {boardId: boardId};
+        let response = await fetch(`/love`, {
+            method: "POST",
+            body: JSON.stringify(requestBody),
+            headers: {"Content-Type": "application/json"}
+        });
+        let responseBody = await response.json(); // { loveId, loveCount }
 
-        liked = !liked;
+        // DOM 업데이트
+        let loveIcon = document.querySelector('#loveIcon');
+        let loveCount = document.querySelector('#loveCount');
+        loveIcon.style.color = 'red';
+        loveIcon.setAttribute('onclick', `deleteLove(${responseBody.body.loveId})`); // `deleteLove(${responseBody.loveId})`에서 ${responseBody.loveId} 삭제해도 됨 왜?? -> 이제 dataset으로 넘기면 됨
+        loveCount.innerHTML = responseBody.body.loveCount;
+    }
+
+    async function deleteLove(loveId) {
+        // let loveId = document.querySelector("#likeIcon").dataset.loveId;
+        let response = await fetch(`/love/${loveId}`, {
+            method: "DELETE"
+        });
+        let responseBody = await response.json(); // { loveCount } // response.text();
+
+        // DOM 업데이트
+        let loveIcon = document.querySelector('#loveIcon');
+        let loveCount = document.querySelector('#loveCount');
+        loveIcon.style.color = 'black';
+        // 방법 1. 매개변수로 boardId 받기 방법 2. delete하고 통신할 때 받는거 3. 전역변수(worst)
+        // boardId는 안바뀌니까 그냥 input으로 넘기는게 좋을듯
+        loveIcon.setAttribute('onclick', `saveLove()`);
+        loveCount.innerHTML = responseBody.body.loveCount;
     }
 </script>
-
 {{> layout/footer}}
