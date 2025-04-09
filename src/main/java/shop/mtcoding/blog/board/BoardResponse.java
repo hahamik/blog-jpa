@@ -35,7 +35,7 @@ public class BoardResponse {
             this.isLove = isLove;
             this.loveCount = loveCount;
             this.loveId = loveId;
-            this.replies = null;
+            this.replies = board.getReplies();
         }
     }
 
