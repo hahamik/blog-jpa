@@ -34,6 +34,10 @@ public class BoardService {
     public BoardResponse.DetailDTO 글상세보기(Integer id, Integer userId) {
         Board board = boardRepository.findByIdJoinUserAndReplies(id);
 
+
+//        board.addReply(new Reply());
+//        board.removeReply(board.getReplies().get(0));
+
         Love love = loveRepository.findByUserIdAndBoardId(userId, id);
         Long loveCount = loveRepository.findByBoardId(id);
 

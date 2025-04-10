@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import shop.mtcoding.blog.user.User;
 
 @RequiredArgsConstructor
@@ -14,6 +15,13 @@ import shop.mtcoding.blog.user.User;
 public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
+
+    @GetMapping("/v2/board/{id}")
+    public @ResponseBody BoardResponse.DetailDTO v2detail(@PathVariable("id") Integer id) {
+        Integer sessionUserId = 4;
+        BoardResponse.DetailDTO detailDTO = boardService.글상세보기(id, sessionUserId);
+        return detailDTO;
+    } // 요즘은 이렇게 주면 뿌리기만 함.
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {

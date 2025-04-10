@@ -27,8 +27,17 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user; // ORM
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) //mappedBy에는 연관관계의 주인의 필드명 //조회의 용도
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //mappedBy에는 연관관계의 주인의 필드명 //조회의 용도
     private List<Reply> replies = new ArrayList<Reply>();
+
+    public void addReply(Reply reply) {
+        replies.add(reply);
+    }
+
+    public void removeReply(Reply reply) {
+        replies.remove(reply);
+    }
 
     @CreationTimestamp
     private Timestamp createdAt;

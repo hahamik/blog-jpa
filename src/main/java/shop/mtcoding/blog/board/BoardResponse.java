@@ -4,6 +4,7 @@ import lombok.Data;
 import shop.mtcoding.blog.reply.Reply;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoardResponse {
@@ -15,27 +16,48 @@ public class BoardResponse {
         private String title;
         private String content;
         private Boolean isPublic;
-        private Boolean isBoardOwner;
+        private Boolean isOwner;
         private Boolean isLove;
         private Integer loveCount;
         private String username;
         private Timestamp createdAt;
         private Integer loveId;
 
-        private List<Reply> replies;
+        private List<ReplyDTO> replies;
+
+        public class ReplyDTO {
+            private Integer id;
+            private String content;
+            private String username;
+            private Boolean isOwner;
+
+
+            public ReplyDTO(Reply reply, Integer sessionUserId) {
+                this.id = reply.getId();
+                this.content = reply.getContent();
+                this.username = reply.getUser().getUsername();
+                this.isOwner = reply.getUser().getId().equals(sessionUserId);
+            }
+        }
 
         public DetailDTO(Board board, Integer sessionUserId, Boolean isLove, Integer loveCount, Integer loveId) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
             this.isPublic = board.getIsPublic();
-            this.isBoardOwner = sessionUserId == board.getUser().getId();
+            this.isOwner = sessionUserId == board.getUser().getId();
             this.username = board.getUser().getUsername();
             this.createdAt = board.getCreatedAt();
             this.isLove = isLove;
             this.loveCount = loveCount;
             this.loveId = loveId;
-            this.replies = board.getReplies();
+            this.replies = new ArrayList<>();
+            List<ReplyDTO> repliesDTO = new ArrayList<>();
+            for (Reply reply : board.getReplies()) {
+                ReplyDTO replyDTO = new ReplyDTO(reply, sessionUserId);
+                repliesDTO.add(replyDTO);
+            }
+            this.replies = repliesDTO;
         }
     }
 
