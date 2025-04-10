@@ -15,7 +15,7 @@ public class BoardResponse {
         private String title;
         private String content;
         private Boolean isPublic;
-        private Boolean isOwner;
+        private Boolean isBoardOwner;
         private Boolean isLove;
         private Integer loveCount;
         private String username;
@@ -29,7 +29,7 @@ public class BoardResponse {
             this.title = board.getTitle();
             this.content = board.getContent();
             this.isPublic = board.getIsPublic();
-            this.isOwner = sessionUserId == board.getUser().getId();
+            this.isBoardOwner = sessionUserId == board.getUser().getId();
             this.username = board.getUser().getUsername();
             this.createdAt = board.getCreatedAt();
             this.isLove = isLove;
