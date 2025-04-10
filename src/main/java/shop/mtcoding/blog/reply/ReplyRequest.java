@@ -11,11 +11,11 @@ public class ReplyRequest {
         private Integer boardId;
         private String content;
 
-        public Reply toEntity(User user, Board board) {
+        public Reply toEntity(User sessionUser) {
             return Reply.builder()
                     .content(content)
-                    .user(user)
-                    .board(board)
+                    .user(sessionUser)
+                    .board(Board.builder().id(boardId).build())
                     .build();
         }
     }

@@ -15,18 +15,18 @@ public class ReplyController {
     private final HttpSession session;
 
     @PostMapping("/reply/save")
-    public String save(ReplyRequest.SaveDTO saveDTO) {
+    public String save(ReplyRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("인증이 필요합니다");
-        replyService.댓글쓰기(saveDTO, sessionUser);
-        return "redirect:/board/" + saveDTO.getBoardId();
+        replyService.댓글쓰기(reqDTO, sessionUser);
+        return "redirect:/board/" + reqDTO.getBoardId();
     }
 
     @PostMapping("/reply/{id}/delete")
-    public String delete(@PathVariable("id") int id, ReplyRequest.DeleteDTO deleteDTO) {
+    public String delete(@PathVariable("id") Integer id, ReplyRequest.DeleteDTO deleteDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("인증이 필요합니다");
-        replyService.댓글삭제(id, deleteDTO, sessionUser);
-        return "redirect:/board/" + deleteDTO.getBoardId();
+        Integer boardId = replyService.댓글삭제(id, sessionUser);
+        return "redirect:/board/" + boardId;
     }
 }

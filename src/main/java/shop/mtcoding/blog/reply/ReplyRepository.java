@@ -17,8 +17,8 @@ public class ReplyRepository {
         return em.find(Reply.class, id);
     }
 
-    public void delete(int id) {
-        em.remove(id);
+    public void deleteById(Integer id) {
+        em.createQuery("delete from Reply r where r.id = :id").setParameter("id", id).executeUpdate();
     }
 
     public List<Reply> findAllByBoardId(Integer boardId) {
@@ -28,8 +28,9 @@ public class ReplyRepository {
         return replies;
     }
 
-    public void save(Reply reply) {
+    public Reply save(Reply reply) {
         em.persist(reply);
+        return reply;
     }
 
 
