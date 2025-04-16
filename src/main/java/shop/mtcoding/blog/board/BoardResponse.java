@@ -9,6 +9,23 @@ import java.util.List;
 
 public class BoardResponse {
 
+    @Data
+    public static class DTO {
+        private List<Board> boards;
+        private Integer prevPage;
+        private Integer nextPage;
+        private Boolean isLastPage;
+        private Boolean isFirstPage;
+
+        public DTO(List<Board> boards, Integer prevPage, Integer nextPage,Boolean isLastPage, Boolean isFirstPage) {
+            this.boards = boards;
+            this.prevPage = prevPage;
+            this.nextPage = nextPage;
+            this.isLastPage = isLastPage;
+            this.isFirstPage = isFirstPage;
+        }
+    }
+
     // 상세보기 화면에 필요한 데이터
     @Data
     public static class DetailDTO {

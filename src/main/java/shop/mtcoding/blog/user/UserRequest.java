@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -9,10 +10,13 @@ public class UserRequest {
     @Data
     public static class UpdateDTO {
         @Pattern(regexp = "^[a-zA-Z0-9]{2,20}$", message = "유저네임은 2~20자이며, 특수문자,한글이 포함될 수 없습니다.")
+        @NotEmpty(message = "아이디를 입력하세요")
         private String username;
         @Size(min=4,max=20)
+        @NotEmpty(message = "비밀번호를 입력하세요")
         private String password;
         @Pattern(regexp = "^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\\.[a-zA-Z]{4,20}$", message = "이메일 형식으로 적어주세요")
+        @NotEmpty(message = "이메일을 입력하세요")
         private String email;
     }
 
@@ -20,10 +24,13 @@ public class UserRequest {
     @Data
     public static class JoinDTO {
         @Pattern(regexp = "^[a-zA-Z0-9]{2,20}$", message = "유저네임은 2~20자이며, 특수문자,한글이 포함될 수 없습니다.")
+        @NotEmpty(message = "아이디을 입력하세요")
         private String username;
         @Size(min=4,max=20)
+        @NotEmpty(message = "비밀번호를 입력하세요")
         private String password;
         @Pattern(regexp = "^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\\.[a-zA-Z]{4,20}$", message = "이메일 형식으로 적어주세요")
+        @NotEmpty(message = "이메일을 입력하세요")
         private String email;
 
         public User toEntity() {
