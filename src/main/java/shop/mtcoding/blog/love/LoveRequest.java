@@ -13,7 +13,7 @@ public class LoveRequest {
         public Love toEntity(Integer sessionUserId) {
             return Love.builder()
                     .board(Board.builder().id(boardId).build())
-                    .user(User.builder().id(sessionUserId).build())
+                    .user(User.builder().   id(sessionUserId).build())
                     .build();
         }
     }

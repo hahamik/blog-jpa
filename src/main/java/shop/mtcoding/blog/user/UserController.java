@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import shop.mtcoding.blog._core.error.anno.MyAfter;
+import shop.mtcoding.blog._core.error.anno.MyAround;
+import shop.mtcoding.blog._core.error.anno.MyBefore;
 import shop.mtcoding.blog._core.error.ex.Exception400;
 import shop.mtcoding.blog._core.util.Resp;
 
@@ -32,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String update(UserRequest.UpdateDTO updateDTO) {
+    public String update(@Valid UserRequest.UpdateDTO updateDTO,Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         // update user_tb set password = ?, email = ? where id = ?
         User userPS = userService.회원정보수정(updateDTO, sessionUser.getId());
@@ -47,13 +50,22 @@ public class UserController {
         return Resp.ok(dto);
     }
 
+    @MyBefore
     @GetMapping("/join-form")
     public String joinForm() {
+
+        System.out.println("join-form 호출됨");
         return "user/join-form";
     }
-
+    @MyAround
+    @GetMapping("/v2/arround")
+    public @ResponseBody String around(){
+        return"good";
+}
+    @MyAfter
     @PostMapping("/join")
     public String join(@Valid UserRequest.JoinDTO joinDTO, Errors errors) { // @Valid 는 해당 언테이션이 붙은 애들이 있는 필드의 dto들에 패턴 사이즈 같은 어노테이션들을 전부 검사한다. 거사하면 Errors errors에 넘겨줌
+        System.out.println("join 호출됨");
         // Errors errors 바로 옆에 안넣으면 인식을 못함
         if (errors.hasErrors()) { // error가 하나 이상이면 true가 뜸
             List<FieldError> fErrors = errors.getFieldErrors();
@@ -83,14 +95,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@Valid UserRequest.LoginDTO loginDTO,Errors errors, HttpServletResponse response) {
-        if (errors.hasErrors()) { // error가 하나 이상이면 true가 뜸
-            List<FieldError> fErrors = errors.getFieldErrors();
 
-            for (FieldError fieldError : fErrors) {
-                throw new Exception400(fieldError.getField()+":"+fieldError.getDefaultMessage());//getField가 필드명
-            }
-
-        }
         //System.out.println(loginDTO);
 
         User sessionUser = userService.로그인(loginDTO);
