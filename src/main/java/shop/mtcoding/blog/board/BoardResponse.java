@@ -20,6 +20,8 @@ public class BoardResponse {
         private Integer current;
         private Boolean isLast; // totalCount, size=3, totalPage ==current
         private Boolean isFirst;
+        private List<Integer> numbers;
+        private Integer pageSize;
 
         public DTO(List<Board> boards,Integer current,Integer totalCount) {
             this.boards = boards;
@@ -27,9 +29,12 @@ public class BoardResponse {
             this.next = current +1;
             this.size=3;//size 어차피 고정 (페이지 글 숫자) 그래서 보통은 final로 따로빼서 사용
             this.totalCount = totalCount; // 5개를 given으로 둬서 먼저 짜고
+            this.pageSize = 5;
+            this.current = current;
 
 
             this.totalPage = makeTotalPage(totalCount,size);
+            this.numbers = pageNumbers(pageSize);
             this.isFirst = current == 0;
             this.isLast  = (totalPage-1)==current;
         }
@@ -37,6 +42,27 @@ public class BoardResponse {
         private Integer makeTotalPage(int totalCount, int size) {
             int rest = totalCount % size > 0 ? 1 : 0;
             return totalCount / size + rest;
+        }
+
+
+
+        private List<Integer> pageNumbers(int pageSize){
+            List<Integer> numbers = new ArrayList<>();
+            // 페이지 크기가 5여서 음.... 4페이지 까지 밖에 안나오는데?
+            // i=0 이 바껴야될듯? 근데 뭘로 바껴야하지?
+            int firstPage = current/pageSize*pageSize;
+            System.out.println("----------------------");
+            System.out.println(firstPage);
+            System.out.println("----------------------");
+//            int lastPage = (current/pageSize+1)*pageSize;  // 이건 아닌듯... 10페이지까지 나옴 gma..
+            int lastPage = (current/pageSize+1)*pageSize>totalPage?totalPage:(current/pageSize+1)*pageSize; // 된 거 같은데??? 캬
+            System.out.println("----------------------");
+            System.out.println(lastPage);
+            System.out.println("----------------------");
+            for (int i=firstPage;i<lastPage;i++){
+                numbers.add(i);
+            }
+            return numbers;
         }
     }
 
