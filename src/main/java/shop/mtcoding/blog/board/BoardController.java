@@ -13,6 +13,14 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
+    // TODO 나중에 할 거
+    //dto 잘 만들어졌는지 확인
+    // 이렇게 하면 json으로 나와서 data확인하기 편함
+    @GetMapping("/v2")
+    public @ResponseBody BoardResponse.DTO v2List(HttpServletRequest request, @RequestParam(required = false, value = "page", defaultValue = "0") Integer page) {
+        return boardService.글목록보기(null, page);
+    }
+
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable("id") Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");

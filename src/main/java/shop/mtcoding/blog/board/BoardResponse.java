@@ -12,17 +12,31 @@ public class BoardResponse {
     @Data
     public static class DTO {
         private List<Board> boards;
-        private Integer prevPage;
-        private Integer nextPage;
-        private Boolean isLastPage;
-        private Boolean isFirstPage;
+        private Integer prev;
+        private Integer next;
+        private Integer size;
+        private Integer totalCount;
+        private Integer totalPage;
+        private Integer current;
+        private Boolean isLast; // totalCount, size=3, totalPage ==current
+        private Boolean isFirst;
 
-        public DTO(List<Board> boards, Integer prevPage, Integer nextPage,Boolean isLastPage, Boolean isFirstPage) {
+        public DTO(List<Board> boards,Integer current,Integer totalCount) {
             this.boards = boards;
-            this.prevPage = prevPage;
-            this.nextPage = nextPage;
-            this.isLastPage = isLastPage;
-            this.isFirstPage = isFirstPage;
+            this.prev = current -1;
+            this.next = current +1;
+            this.size=3;//size 어차피 고정 (페이지 글 숫자) 그래서 보통은 final로 따로빼서 사용
+            this.totalCount = totalCount; // 5개를 given으로 둬서 먼저 짜고
+
+
+            this.totalPage = makeTotalPage(totalCount,size);
+            this.isFirst = current == 0;
+            this.isLast  = (totalPage-1)==current;
+        }
+
+        private Integer makeTotalPage(int totalCount, int size) {
+            int rest = totalCount % size > 0 ? 1 : 0;
+            return totalCount / size + rest;
         }
     }
 
