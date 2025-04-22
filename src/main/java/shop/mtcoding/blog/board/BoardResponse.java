@@ -21,6 +21,7 @@ public class BoardResponse {
         private Boolean isLast; // totalCount, size=3, totalPage ==current
         private Boolean isFirst;
         private List<Integer> numbers;
+        private List<Integer> pNumbers;
         private Integer pageSize;
 
         public DTO(List<Board> boards,Integer current,Integer totalCount) {
@@ -34,7 +35,7 @@ public class BoardResponse {
 
 
             this.totalPage = makeTotalPage(totalCount,size);
-            this.numbers = pageNumbers(pageSize);
+            this.numbers = pageNumbers(current,pageSize);
             this.isFirst = current == 0;
             this.isLast  = (totalPage-1)==current;
         }
@@ -46,7 +47,7 @@ public class BoardResponse {
 
 
 
-        private List<Integer> pageNumbers(int pageSize){
+        private List<Integer> pageNumbers(int current,int pageSize){
             List<Integer> numbers = new ArrayList<>();
             // 페이지 크기가 5여서 음.... 4페이지 까지 밖에 안나오는데?
             // i=0 이 바껴야될듯? 근데 뭘로 바껴야하지?

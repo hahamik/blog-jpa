@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import shop.mtcoding.blog.reply.Reply;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Import(BoardRepository.class) // BoardRepository
@@ -14,7 +15,22 @@ public class BoardRepositoryTest {
 
     @Autowired // DI
     private BoardRepository boardRepository;
+    @Test
+    public void makeNumbers() {
+        int current = 5;
+        int totalPage = 7;
 
+        List<Integer> numbers = new ArrayList<>();
+
+        int start = (current / 5) * 5;
+        int end = Math.min(start + 5, totalPage);
+
+        for (int i = start; i < end; i++) {
+            numbers.add(i);
+        }
+
+        numbers.forEach(System.out::println);
+    }
     @Test
     public void findByIdJoinUserAndReplies_test() {
         // given
